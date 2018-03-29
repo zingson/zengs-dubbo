@@ -1,0 +1,5 @@
+package com.zengs.dubbo.service;
+
+public interface DemoService {
+    String sayHello(String name);
+}

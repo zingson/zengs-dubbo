@@ -1,0 +1,79 @@
+group 'com.zengs.cloud'
+version '1.0'
+
+/**
+ * @Author Zengs
+ * @Date 2018-3-29
+ * @Description
+ *      构建dubbo
+ */
+
+buildscript {
+    ext {
+        springBootVersion = '2.0.0.RELEASE'
+    }
+    repositories {
+        jcenter()
+        maven {url 'https://repo.spring.io/libs-milestone'}
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'idea'
+idea.project {
+    jdkName = '1.8'
+    languageLevel = '1.8'
+}
+
+allprojects {
+
+}
+
+subprojects {
+    apply plugin: 'java'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    [compileJava,compileTestJava,javadoc]*.options*.encoding = 'UTF-8'
+    compileJava*.options*.compilerArgs=[/*"-Xlint:unchecked",*/ "-g:vars", "-g:lines", "-g:source"]
+
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven { url 'https://repo.spring.io/libs-milestone'}
+        //maven { url 'http://maven.aliyun.com/nexus/content/groups/public'}
+        //maven { url 'https://jitpack.io' }
+    }
+
+    // 'Spring boot'  dependencies plugins
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    dependencies {
+        compile 'org.springframework.boot:spring-boot-starter-web'
+        compile 'org.springframework.boot:spring-boot-starter-actuator'
+
+        compile fileTree(dir: 'lib', include: ['*.jar'])
+        testCompile 'org.springframework.boot:spring-boot-starter-test'
+
+
+        // https://mvnrepository.com/artifact/com.alibaba/dubbo
+        compile 'com.alibaba:dubbo:2.6.1'
+        compile 'org.apache.zookeeper:zookeeper:3.4.10'
+        compile 'org.apache.curator:curator-framework:4.0.0'
+
+        compile project(':dubbo-api')
+
+
+    }
+}
+
+/*
+project(':zuul-api-gateway'){
+    dependencies {
+        compile 'org.springframework.cloud:spring-cloud-starter-netflix-ribbon'
+    }
+}
+*/

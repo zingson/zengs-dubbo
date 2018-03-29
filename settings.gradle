@@ -1,0 +1,5 @@
+rootProject.name = 'zengs-dubbo'
+
+include 'dubbo-api','dubbo-provider','dubbo-consumer'
+
+
